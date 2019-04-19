@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		* {
+			font-size: 16px;
+		}
+		.div1 {
+			color: BLACK;
+			background-color: aquamarine;
+			margin: 20px;
+			padding: 20px;
+		}
+		.div2 {
+			color: WHITE;
+			background-color: chocolate;
+			width: 70%;
+			margin: 20px;
+			padding: 40px;
+		}
+
+	</style>
+
+</head>
+<body>
+
+<div id="div1" class="div1">
+	<br>DIV #1<Br>
+	<div id="div2" class="div2">
+		<br>DIV #2<br><br>
+			<input
+					id="input1"
+					type="button"
+					onclick="handleDOMClick(event)"
+					value="BUTTON: Click me"
+					data-info="Some secret value through the attribute"
+			>
+	</div>
+	<br><br>
+</div>
+<textarea id="txt1" cols="20" rows="8"></textarea>
+<script>
+	window.echo = function () {
+		console.log.apply(this, arguments);
+	};
+
+	function toTextArea(val) {
+		var areaText = document.getElementById('txt1').value;
+		areaText += '\n' + val;
+		document.getElementById('txt1').value = areaText;
+	}
+	function handleDOMClick(e) {
+		echo('This is from BUTTON > handleDOMClick');
+	}
+	function handleClickButton(e) {
+		echo('This is from BUTTON > handleClickButton', e);
+	}
+
+	function handleClickButtonSecond(e) {
+		echo("EVENT OBJECT: ", e)
+		// echo('This is from BUTTON > handleClickButtonSecond: ', e.target.getAttribute('data-info'));
+		echo('This is from BUTTON > handleClickButtonSecond THIS: ', this.getAttribute('data-info'));
+
+	}
+
+	function handleDivClick(e) {
+		echo("PHASE 1: ", e.eventPhase)
+		echo("GOT EVENT: ", e.currentTarget)
+		// e.stopPropagation();
+	}
+
+	function handleDivClickBubble(e) {
+		echo("PHASE 3: ", e.eventPhase)
+		echo("GOT EVENT: ", e.currentTarget)
+	}
+
+	var inputElement = document.getElementById('input1');
+	inputElement.addEventListener("click",handleClickButtonSecond);
+
+	var div1 = document.getElementById('div1');
+	var div2 = document.getElementById('div2');
+
+	div1.addEventListener("click", handleDivClick, true);
+	div2.addEventListener("click", handleDivClick, true);
+
+	div1.addEventListener("click", handleDivClickBubble, false);
+	div2.addEventListener("click", handleDivClickBubble, false);
+	/* document.getElementById('input1').onclick = function (event) {
+		handleClickButton(event);
+	}
+	*/
+
+	var person = {
+		name: "Sofi",
+		age: 30,
+	}
+
+	var field = "address";
+	person[field] = "Moscow, Yartsevskaya st 40";
+	person["phone"] = "+7-905-555-11-23";
+	// person.phone
+
+	echo(person)
+
+</script>
+</body>
+</html>
